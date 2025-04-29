@@ -12,7 +12,7 @@ export default function Home() {
       </div>
       {user ? (
         <div className="p-8 space-x-4">
-          <span>You're authenticated!</span>
+          <span>You&apos;re authenticated!</span>
           <Button variant="destructive">Logout</Button>
         </div>
       ) : (

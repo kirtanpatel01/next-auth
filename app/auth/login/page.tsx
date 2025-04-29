@@ -13,12 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { ModeToggle } from "@/components/ModeToggle"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -32,7 +30,7 @@ const formSchema = z.object({
   password: z.string().min(6).max(16),
 })
 
-export default function page() {
+export default function Page() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
