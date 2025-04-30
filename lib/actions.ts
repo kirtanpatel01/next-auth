@@ -1,10 +1,11 @@
+// lib/actinos.ts
+
 "use server"
 
 import { signIn, signOut } from "@/auth"
 import { User, RegisterSchemaType } from "../models/user"
 import { connectToDB } from "./mongoose"
 import bcrypt from 'bcryptjs';
-import { redirect } from "next/navigation";
 
 export async function signInWithGoogle() {
   await signIn("google", { redirectTo: '/' })
@@ -14,12 +15,17 @@ export async function loginAction(formData: FormData) {
   try {
     await signIn('credentials', formData);
     return { success: true };
-  } catch (err: any) {
-    // Suppress NEXT_REDIRECT message
-    if (err?.message === 'NEXT_REDIRECT') {
-      return { success: true };
+  } catch (err: unknown) {
+    // Narrow the type safely
+    if (err instanceof Error) {
+      if (err.message === 'NEXT_REDIRECT') {
+        return { success: true };
+      }
+      return { error: err.message || 'Login failed' };
     }
-    return { error: err.message || 'Login failed' };
+
+    // Fallback for non-standard errors
+    return { error: 'Login failed due to an unknown error' };
   }
 }
 

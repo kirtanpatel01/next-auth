@@ -1,3 +1,5 @@
+// app\auth\register\page.tsx
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -25,7 +27,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { registerUser } from "@/lib/actions"
 import { RegisterSchemaType } from "../../../models/user"
 import { toast } from "sonner"
-import { redirect, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 
 const formSchema = z.object({
