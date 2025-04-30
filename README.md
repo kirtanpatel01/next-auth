@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Auth Demo (Credentials + Google OAuth)
+This is a simple authentication demo built with `Next.js` App Router to explore how to integrate:
 
-## Getting Started
+* Email/Password login using `Auth.js`
+* Google login using `OAuth`
+* Form validation using React Hook Form + `Zod`
+* Styled UI components with `shadcn/ui`
 
-First, run the development server:
+Perfect for learning how to implement secure auth in modern Next.js apps.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
+- Manual login with email and password
+- Google login using NextAuth provider
+- Proper form validation using Zod
+- Data management using Mongoose
+- Clean UI with shadcn/ui
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Live Demo
+🔗 [KJ_PATEL - Auth.ts](https://next-auth-five-ruby.vercel.app)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
+- Next.js `(App Router)`
+- Auth.js
+- Mongoose
+- shadcn/ui
+- Zod
+- React Hook Form
+- Tailwind CSS
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Future Additions
+ 1. Forgot password flow
 
-## Learn More
+ 2. Magic links
 
-To learn more about Next.js, take a look at the following resources:
+ 3. Passkey support
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+ 4. Two-Factor Authentication (2FA)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. Protected dashboard with user-specific data
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
