@@ -1,9 +1,14 @@
+import { auth } from "@/auth";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
+import { logoutAction } from "@/lib/actions";
 import Link from "next/link";
 
-export default function Home() {
-  const user = false;
+export default async function Home() {
+  const session = await auth();
+  console.log(session);
+  console.log(session?.user);
+  const user = session?.user;
   return (
     <div className="min-h-screen">
       {/* <span className="text-[21.3rem] font-black text-purple-700 tracking-wider">Kiton</span> */}
@@ -13,7 +18,7 @@ export default function Home() {
       {user ? (
         <div className="p-8 space-x-4">
           <span>You&apos;re authenticated!</span>
-          <Button variant="destructive">Logout</Button>
+          <Button onClick={logoutAction} variant="destructive">Logout</Button>
         </div>
       ) : (
         <div className="p-8 space-x-4">

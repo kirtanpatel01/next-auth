@@ -22,18 +22,26 @@ import {
 } from "@/components/ui/card"
 import Link from "next/link"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { registerUser } from "@/lib/actions"
+import { RegisterSchemaType } from "../../../models/user"
+import { toast } from "sonner"
+import { redirect, useRouter } from "next/navigation"
 
 
 const formSchema = z.object({
-  fullName: z.string(),
-  username: z.string().toLowerCase(),
-  phone: z.string().min(10).max(10),
-  email: z.string().email(),
-  password: z.string().min(6).max(16),
+  fullName: z.string().min(1, "Full name is required"),
+  username: z.string().min(1, "Username is required").toLowerCase(),
+  phone: z.string().min(10, "Phone must be 10 digits").max(10, "Phone must be 10 digits"),
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters").max(16),
   confirmPassword: z.string()
-})
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"]
+});
 
 export default function Page() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,12 +54,34 @@ export default function Page() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData: RegisterSchemaType = {
+      fullName: values.fullName,
+      username: values.username,
+      email: values.email,
+      phone: values.phone,
+      password: values.password,
+    }
+
+    try {
+      const res = await registerUser(formData);
+  
+      if (res.status === 201) {
+        console.log("Success:", res.message);
+        toast.success(res.message);
+        router.push('/auth/login');
+      } else {
+        console.warn("Error:", res.message);
+        toast.error(res.message)
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      toast.error("Unexpected error");
+    }
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4">
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-20">
       <Breadcrumb className="absolute top-4 left-4">
         <BreadcrumbList>
           <BreadcrumbItem>

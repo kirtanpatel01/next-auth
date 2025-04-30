@@ -21,9 +21,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import Link from "next/link"
-import Image from "next/image"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
-
+import Image from "next/image"
+import { loginAction, signInWithGoogle } from "@/lib/actions"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -31,6 +33,7 @@ const formSchema = z.object({
 })
 
 export default function Page() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,8 +42,19 @@ export default function Page() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData = new FormData();
+    formData.append('email', values.email)
+    formData.append('password', values.password);
+
+    const res = await loginAction(formData);
+
+    if (res?.error) {
+      toast.error(res.error);
+    } else if (res?.success) {
+      toast.success('Logged in successfully!');
+      router.push('/');
+    }
   }
 
   return (
@@ -107,7 +121,7 @@ export default function Page() {
             </span>
           </div>
 
-          <Button className="w-full border border-border bg-background hover:bg-black cursor-pointer">
+          <Button onClick={signInWithGoogle} className="w-full border border-border bg-background hover:bg-black cursor-pointer">
             <Image src={'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg'} alt="google-logo" width={16} height={16} />
             Login with Google
           </Button>
