@@ -145,7 +145,7 @@ export default function Page() {
           <Button
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            className="w-full border border-border bg-background text-foreground hover:bg-black cursor-pointer"
+            className="w-full border border-border bg-background text-foreground  cursor-pointer hover:bg-background"
           >
             {googleLoading ? (
               <>
