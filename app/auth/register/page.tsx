@@ -5,7 +5,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -28,6 +27,8 @@ import { registerUser } from "@/lib/actions"
 import { RegisterSchemaType } from "../../../models/user"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import SubmitBtn from "@/components/SubmitBtn"
+import { useState } from "react"
 
 
 const formSchema = z.object({
@@ -44,6 +45,8 @@ const formSchema = z.object({
 
 export default function Page() {
   const router = useRouter();
+  const [ isLoading, setIsLoading ] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,6 +60,8 @@ export default function Page() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true)
+
     const formData: RegisterSchemaType = {
       fullName: values.fullName,
       username: values.username,
@@ -79,6 +84,8 @@ export default function Page() {
     } catch (error) {
       console.error("Unexpected error:", error);
       toast.error("Unexpected error");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -183,7 +190,7 @@ export default function Page() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="cursor-pointer w-full">Regsiter</Button>
+              <SubmitBtn isLoading={isLoading} text="Register" loadingText="Registering..." />
             </form>
           </Form>
 

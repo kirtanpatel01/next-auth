@@ -26,6 +26,9 @@ import Image from "next/image"
 import { loginAction, signInWithGoogle } from "@/lib/actions"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
+import SubmitBtn from "@/components/SubmitBtn"
+import { Loader2 } from "lucide-react"
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -34,6 +37,9 @@ const formSchema = z.object({
 
 export default function Page() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,12 +48,26 @@ export default function Page() {
     },
   })
 
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    try {
+      await signInWithGoogle();
+    } catch (err) {
+      console.log(err);
+      setGoogleLoading(false);
+      toast.error("Google sign-in failed.");
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+
     const formData = new FormData();
     formData.append('email', values.email)
     formData.append('password', values.password);
 
     const res = await loginAction(formData);
+    setIsLoading(false)
 
     if (res?.error) {
       toast.error(res.error);
@@ -106,7 +126,7 @@ export default function Page() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="cursor-pointer w-full">Login</Button>
+              <SubmitBtn isLoading={isLoading} text="Login" loadingText="Loggin in..." />
             </form>
           </Form>
 
@@ -121,9 +141,28 @@ export default function Page() {
             </span>
           </div>
 
-          <Button onClick={signInWithGoogle} className="w-full border border-border bg-background hover:bg-black cursor-pointer">
-            <Image src={'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg'} alt="google-logo" width={16} height={16} />
-            Login with Google
+          <Button
+            onClick={handleGoogleLogin}
+            disabled={googleLoading}
+            className="w-full border border-border bg-background text-foreground hover:bg-black cursor-pointer"
+          >
+            {googleLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                Redirecting...
+              </>
+            ) : (
+              <>
+                <Image
+                  src={'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg'}
+                  alt="google-logo"
+                  width={16}
+                  height={16}
+                  className="mr-2"
+                />
+                Login with Google
+              </>
+            )}
           </Button>
         </CardContent>
       </Card>
