@@ -11,7 +11,7 @@ import React, { useState, useEffect } from 'react'
 import { toast } from 'sonner';
 import axios from 'axios';
  
-function page() {
+function Page() {
     const [isLoading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [email, setEmail] = useState<string | null>(null);
@@ -25,6 +25,7 @@ function page() {
                 const res = await axios.post('/api/verify-token', {token});
                 setEmail(res.data.email);
             } catch (error) {
+                console.log(error);
                 toast.error('Invalid or expired link');
                 router.push('/auth/login');
             }
@@ -32,7 +33,7 @@ function page() {
 
         if(token) verifyToken();
         else router.push('/auth/login');
-    }, [token]);
+    }, [token, router]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -59,11 +60,13 @@ function page() {
                 toast.success('Password reset successfully');
                 setSuccess(true);
             } catch (error) {
+                console.log(error);
                 toast.error('Something went wrong!');
             } finally {
                 setLoading(false)
             }
         } catch (error) {
+            console.log(error);
             toast.error('Something went wrong!')
         }
     }
@@ -95,4 +98,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

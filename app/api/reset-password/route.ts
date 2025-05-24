@@ -15,6 +15,7 @@ export async function POST(req: Request) {
         }
         return Response.json({ message: 'Password reset' });
     } catch (err) {
+        console.log(err);
         return Response.json({ error: 'Failed to reset password' }, { status: 500 });
     }
 }
