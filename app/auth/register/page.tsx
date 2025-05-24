@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/card"
 import Link from "next/link"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
-import { registerUser } from "@/lib/actions"
+import { registerUser } from "@/lib/auth.actions"
 import { RegisterSchemaType } from "../../../models/user"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
@@ -45,7 +45,7 @@ const formSchema = z.object({
 
 export default function Page() {
   const router = useRouter();
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,7 +72,7 @@ export default function Page() {
 
     try {
       const res = await registerUser(formData);
-  
+
       if (res.status === 201) {
         console.log("Success:", res.message);
         toast.success(res.message);

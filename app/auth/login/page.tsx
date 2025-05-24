@@ -23,7 +23,7 @@ import {
 import Link from "next/link"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import Image from "next/image"
-import { loginAction, signInWithGoogle } from "@/lib/actions"
+import { loginAction, signInWithGoogle } from "@/lib/auth.actions"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -118,7 +118,7 @@ export default function Page() {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem className="w-full">
+                  <FormItem className="w-full m-0">
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="password" {...field} />
@@ -127,6 +127,16 @@ export default function Page() {
                   </FormItem>
                 )}
               />
+
+              <Link href={'/auth/login/forgot-password'}>
+                <Button
+                  type="button"
+                  variant='link'
+                  className="flex place-self-end cursor-pointer px-1 mb-4">
+                  Forgot password ?
+                </Button>
+              </Link>
+
               <SubmitBtn isLoading={isLoading} text="Login" loadingText="Loggin in..." />
             </form>
           </Form>

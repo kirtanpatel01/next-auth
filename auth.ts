@@ -40,7 +40,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         throw new Error('Password not match');
                     }
 
-                    console.log(user);
                     return {
                         id: user._id.toString(),
                         email: user.email,

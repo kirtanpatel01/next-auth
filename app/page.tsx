@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
-import { logoutAction } from "@/lib/actions";
+import { logoutAction } from "@/lib/auth.actions";
 import Link from "next/link";
 
 export default async function Home() {

@@ -89,3 +89,39 @@ export async function registerUser(formData: RegisterSchemaType) {
     };
   }
 }
+
+export async function fetchUserNameByEmail(email: string) {
+  try {
+    if (!email) {
+      return {
+        status: 409,
+        message: "Email is required.",
+        data: null,
+      }
+    }
+
+    await connectToDB();
+    const user = await User.findOne({ email });
+    if (!user) {
+      return {
+        status: 404,
+        message: "User not found.",
+        data: null,
+      }
+    }
+
+    return {
+      status: 200,
+      message: "Name fetched successfully.",
+      data: { name: user?.fullName },
+    }
+
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      message: "Something went wrong on the server.",
+      data: null,
+    }
+  }
+}
