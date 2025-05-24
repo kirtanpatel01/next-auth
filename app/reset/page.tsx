@@ -1,101 +1,107 @@
-'use client'
+'use client';
 
-import ResetPw from '@/components/Breadcrumbs/ResetPw';
 import SubmitBtn from '@/components/SubmitBtn';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
- 
-function Page() {
-    const [isLoading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [email, setEmail] = useState<string | null>(null);
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const token = searchParams.get('token');
 
-    useEffect(()=> {
-        const verifyToken = async() => {
-            try {
-                const res = await axios.post('/api/verify-token', {token});
-                setEmail(res.data.email);
-            } catch (error) {
-                console.log(error);
-                toast.error('Invalid or expired link');
-                router.push('/auth/login');
-            }
-        }
+function ResetPageContent() {
+  const [isLoading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
 
-        if(token) verifyToken();
-        else router.push('/auth/login');
-    }, [token, router]);
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const res = await axios.post('/api/verify-token', { token });
+        setEmail(res.data.email);
+      } catch (error) {
+        console.log(error);
+        toast.error('Invalid or expired link');
+        router.push('/auth/login');
+      }
+    };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
+    if (token) verifyToken();
+    else router.push('/auth/login');
+  }, [token, router]);
 
-        try {
-            const formData = new FormData(e.currentTarget);
-            const newPassword = formData.get('newPassword')?.toString();
-            const confirmPassword = formData.get('confirmPassword')?.toString();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
-            if (!newPassword || !confirmPassword) {
-                toast.error('Both password fields required!');
-                return
-            }
+    try {
+      const formData = new FormData(e.currentTarget);
+      const newPassword = formData.get('newPassword')?.toString();
+      const confirmPassword = formData.get('confirmPassword')?.toString();
 
-            if (newPassword !== confirmPassword) {
-                toast.error('Password do not match!')
-                return
-            }
+      if (!newPassword || !confirmPassword) {
+        toast.error('Both password fields required!');
+        return;
+      }
 
-            try {
-                setLoading(true);
-                await axios.post('/api/reset-password', { email, newPassword });
-                toast.success('Password reset successfully');
-                setSuccess(true);
-            } catch (error) {
-                console.log(error);
-                toast.error('Something went wrong!');
-            } finally {
-                setLoading(false)
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error('Something went wrong!')
-        }
+      if (newPassword !== confirmPassword) {
+        toast.error('Passwords do not match!');
+        return;
+      }
+
+      try {
+        await axios.post('/api/reset-password', { email, newPassword });
+        toast.success('Password reset successfully');
+        setSuccess(true);
+      } catch (error) {
+        console.log(error);
+        toast.error('Something went wrong!');
+      } finally {
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong!');
     }
-    return (
-        <div className='min-h-screen flex justify-center items-center'>
-            <ResetPw />
-            {!success ? (
-                <Card className='w-full max-w-96'>
-                    <CardHeader className='text-center'>
-                        <CardTitle>Reset Your Password</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <form className='space-y-4' onSubmit={handleSubmit}>
-                            <Input placeholder='New Password...' name='newPassword' />
-                            <Input placeholder='Re-Enter Password...' name='confirmPassword' />
-                            <SubmitBtn text='Save' loadingText='Saving...' isLoading={isLoading} />
-                        </form>
-                    </CardContent>
-                </Card>
-            ) : (
-                <div>
-                    <span>Your password has changed!</span>
-                    <Link href='/auth/login'>
-                        <Button variant={'link'} className='cursor-pointer' >Back to Login</Button>
-                    </Link>
-                </div>
-            )}
+  };
+
+  return (
+    <div className='min-h-screen flex justify-center items-center'>
+      {!success ? (
+        <Card className='w-full max-w-96'>
+          <CardHeader className='text-center'>
+            <CardTitle>Reset Your Password</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form className='space-y-4' onSubmit={handleSubmit}>
+              <Input placeholder='New Password...' name='newPassword' />
+              <Input placeholder='Re-Enter Password...' name='confirmPassword' />
+              <SubmitBtn text='Save' loadingText='Saving...' isLoading={isLoading} />
+            </form>
+          </CardContent>
+        </Card>
+      ) : (
+        <div>
+          <span>Your password has changed!</span>
+          <Link href='/auth/login'>
+            <Button variant={'link'} className='cursor-pointer'>
+              Back to Login
+            </Button>
+          </Link>
         </div>
-    )
+      )}
+    </div>
+  );
 }
 
-export default Page
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPageContent />
+    </Suspense>
+  );
+}
