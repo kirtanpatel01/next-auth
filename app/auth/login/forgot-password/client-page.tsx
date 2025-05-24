@@ -7,6 +7,7 @@ import { Send } from 'lucide-react'
 import React, { useState } from 'react';
 import ForgetPw from '@/components/Breadcrumbs/ForgetPw'
 import Link from 'next/link'
+import axios from 'axios'
 
 export default function ClientPage() {
     const [email, setEmail] = useState('');
@@ -20,25 +21,11 @@ export default function ClientPage() {
         setError('');
 
         try {
-            const res = await fetch('/api/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email }),
-            });
-
-            const data = await res.json();
-
-            if (res.ok) {
-                setSuccess(true);
-                setEmail('');
-            } else {
-                setError(data?.error?.message || 'Something went wrong');
-            }
-        } catch (err) {
-            console.log(err);
-            setError('Network error');
+            await axios.post('/api/send', {email});
+            setSuccess(true);
+        } catch (error: any) {
+            console.log(error.response.data.error);
+            setError(error.response.data.error);
         } finally {
             setLoading(false);
         }
@@ -50,7 +37,7 @@ export default function ClientPage() {
             {success ? (
                 <Card className='max-w-md sm:max-w-xl sm:p-8 w-full text-center'>
                     We&apos;ve sent you a email with a button &quot;Reset&quot; click on it and you&apos;ll redirect to the reset page!
-                    <Button variant="link">
+                    <Button onClick={() => setSuccess(false)} variant="link">
                         <Link href={'/auth/login/forgot-password'}>
                             Back
                         </Link>    

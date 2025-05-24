@@ -11,6 +11,9 @@ export async function POST(req: Request) {
     try {
         const { email } = await req.json();
         const res = await fetchUserNameByEmail(email);
+        if(res.status == 404) {
+            return Response.json({ error: res.message }, { status: res.status })
+        }
         let name='';
         
         if(res.status === 200) {

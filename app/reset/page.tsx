@@ -45,27 +45,23 @@ function ResetPageContent() {
 
       if (!newPassword || !confirmPassword) {
         toast.error('Both password fields required!');
+        setLoading(false);
         return;
       }
 
       if (newPassword !== confirmPassword) {
         toast.error('Passwords do not match!');
+        setLoading(false);
         return;
       }
-
-      try {
-        await axios.post('/api/reset-password', { email, newPassword });
-        toast.success('Password reset successfully');
-        setSuccess(true);
-      } catch (error) {
-        console.log(error);
-        toast.error('Something went wrong!');
-      } finally {
-        setLoading(false);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error('Something went wrong!');
+      await axios.post('/api/reset-password', { email, newPassword });
+      toast.success('Password reset successfully');
+      setSuccess(true);
+    } catch (error: any) {
+      console.log(error.response.data.error);
+      toast.error(error.response.data.error);
+    } finally {
+      setLoading(false);
     }
   };
 

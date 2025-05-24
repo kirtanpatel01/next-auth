@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react'
 
 function SubmitBtn({ isLoading, text, loadingText }: { isLoading: boolean, text: string, loadingText: string }) {
     return (
-        <Button type='submit' disabled={isLoading} className='cursor-pointer w-full'>
+        <Button type='submit' disabled={isLoading} className={`${isLoading ? 'cursor-not-allowed' : 'cursor-pointer'} w-full`}>
             {isLoading ? (
                 <>
                     <Loader2 className='mr-2 animate-spin' size={500} />
