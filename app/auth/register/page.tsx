@@ -23,12 +23,12 @@ import {
 } from "@/components/ui/card"
 import Link from "next/link"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
-import { registerUser } from "@/lib/auth.actions"
 import { RegisterSchemaType } from "../../../models/user"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import SubmitBtn from "@/components/SubmitBtn"
 import { useState } from "react"
+import axios from "axios"
 
 
 const formSchema = z.object({
@@ -71,19 +71,20 @@ export default function Page() {
     }
 
     try {
-      const res = await registerUser(formData);
-
-      if (res.status === 201) {
-        console.log("Success:", res.message);
-        toast.success(res.message);
+      const res = await axios.post('/api/register', formData);
+      console.log(res);
+      if (res.status == 201) {
+        toast.success(res.data.message || "Registration successful!");
         router.push('/auth/login');
       } else {
-        console.warn("Error:", res.message);
-        toast.error(res.message)
+        toast.error(res.data.message || "Something went wrong.");
       }
     } catch (error) {
-      console.error("Unexpected error:", error);
-      toast.error("Unexpected error");
+      if (axios.isAxiosError(error) && error.response) {
+        toast.error(error.response.data.message || "Server responded with an error");
+      } else {
+        toast.error("Unexpected error occurred");
+      }
     } finally {
       setIsLoading(false);
     }

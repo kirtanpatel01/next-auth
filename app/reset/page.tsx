@@ -57,9 +57,14 @@ function ResetPageContent() {
       await axios.post('/api/reset-password', { email, newPassword });
       toast.success('Password reset successfully');
       setSuccess(true);
-    } catch (error: any) {
-      console.log(error.response.data.error);
-      toast.error(error.response.data.error);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.log(error.response.data.error);
+        toast.error(error.response.data.error);
+    } else {
+        console.log("Unknown error:", error);
+        toast.error("An unexpected error occurred.");
+    }
     } finally {
       setLoading(false);
     }

@@ -68,7 +68,6 @@ export default function Page() {
 
     const res = await loginAction(formData);
     setIsLoading(false)
-    console.log(res);
 
     if (res?.error) {
       toast.error('Invalid credentials!');

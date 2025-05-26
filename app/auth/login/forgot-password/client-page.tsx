@@ -21,11 +21,16 @@ export default function ClientPage() {
         setError('');
 
         try {
-            await axios.post('/api/send', {email});
+            await axios.post('/api/send', { email });
             setSuccess(true);
-        } catch (error: any) {
-            console.log(error.response.data.error);
-            setError(error.response.data.error);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                console.log(error.response.data.error);
+                setError(error.response.data.error);
+            } else {
+                console.log("Unknown error:", error);
+                setError("An unexpected error occurred.");
+            }
         } finally {
             setLoading(false);
         }
@@ -40,8 +45,8 @@ export default function ClientPage() {
                     <Button onClick={() => setSuccess(false)} variant="link">
                         <Link href={'/auth/login/forgot-password'}>
                             Back
-                        </Link>    
-                    </Button> 
+                        </Link>
+                    </Button>
                 </Card>
             ) : (
                 <Card className='max-w-md sm:max-w-xl sm:p-8 w-full'>

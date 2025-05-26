@@ -6,8 +6,6 @@ import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
-  console.log(session);
-  console.log(session?.user);
   const user = session?.user;
   return (
     <div className="min-h-screen">
@@ -17,8 +15,12 @@ export default async function Home() {
       </div>
       {user ? (
         <div className="p-8 space-x-4">
-          <span>You&apos;re authenticated!</span>
-          <Button onClick={logoutAction} variant="destructive">Logout</Button>
+
+          <span>
+            <span className="text-purple-500 text-lg font-bold tracking-wider">{user.name}, </span>
+            You&apos;re authenticated!
+          </span>
+          <Button onClick={logoutAction} variant="destructive" className="cursor-pointer">Logout</Button>
         </div>
       ) : (
         <div className="p-8 space-x-4">

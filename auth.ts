@@ -6,7 +6,6 @@ import Credentials from 'next-auth/providers/credentials';
 import { User } from "./models/user";
 import { connectToDB } from "./lib/mongoose";
 import bcrypt from "bcryptjs";
-// import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -17,7 +16,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 password: { label: 'Password', type: 'password' },
             },
             authorize: async (credentials) => {
-                // console.log(credential.email);
                 const email = credentials?.email;
                 const password = credentials?.password;
 
@@ -50,4 +48,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
         })
     ],
+
+    callbacks: {
+        async signIn({ user, account }) {
+            if(account?.provider === 'google') {
+                try {
+                    await connectToDB();
+                    const existingUser = await User.findOne({ email: user.email });
+
+                    if(!existingUser) {
+                        await User.create({
+                            email: user.email,
+                            fullName: user.name,
+                        })
+                    }
+                } catch (error) {
+                    console.log("Error saving google user: ", error);
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 })
