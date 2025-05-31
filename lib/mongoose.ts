@@ -6,13 +6,11 @@ if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable.");
 }
 
-// Define the type of the cache
 type MongooseCache = {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
 };
 
-// Attach cache to the global object safely
 const globalWithMongoose = globalThis as typeof globalThis & {
   mongoose?: MongooseCache;
 };

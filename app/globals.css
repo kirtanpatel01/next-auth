@@ -111,11 +111,28 @@
   --breakpoint-xs: 425px;
 }
 
+@theme {
+  --color-c95: #020617;
+  --color-c90: #0f172a;
+  --color-c80: #1e293b;
+  --color-c70: #334155;
+  --color-c60: #475569;
+  --color-c50: #64748b;
+  --color-c40: #94a3b8;
+  --color-c30: #cbd5e1;
+  --color-c20: #e2e8f0;
+  --color-c10: #f1f5f9;
+  --color-c05: #f8fafc;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-c05 dark:bg-c95 text-c95 dark:text-c20;
+  }
+  .side-btn {
+    @apply cursor-pointer border border-c50/50 dark:border-c50/30 dark:hover:border-c50/60 hover:border-c50 rounded-md px-4 py-2 text-center bg-c20 dark:bg-c95/25 hover:bg-c30 dark:hover:bg-c95 
   }
 }
