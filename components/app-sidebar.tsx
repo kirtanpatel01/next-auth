@@ -11,6 +11,7 @@ import {
     SidebarMenuItem
 } from './ui/sidebar'
 import { ListTodo, Dumbbell, ChartSpline } from 'lucide-react'
+import Link from 'next/link'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
     session: Session | null
@@ -32,10 +33,10 @@ export default function AppSidebar(
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-                            <a href="#">
+                            <Link href="/">
                                 <ChartSpline className="!size-5" />
                                 <span className="text-base font-semibold">Dot Habits</span>
-                            </a>
+                            </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
@@ -47,10 +48,10 @@ export default function AppSidebar(
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title} >
                                     <SidebarMenuButton asChild>
-                                        <a href={item.url}>
+                                        <Link href={item.url}>
                                             <item.icon />
                                             <span>{item.title}</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
