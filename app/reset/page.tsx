@@ -1,6 +1,6 @@
 'use client';
 
-import SubmitBtn from '@/components/SubmitBtn';
+import SubmitBtn from '@/components/submit-btn';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -61,10 +61,10 @@ function ResetPageContent() {
       if (axios.isAxiosError(error) && error.response) {
         console.log(error.response.data.error);
         toast.error(error.response.data.error);
-    } else {
+      } else {
         console.log("Unknown error:", error);
         toast.error("An unexpected error occurred.");
-    }
+      }
     } finally {
       setLoading(false);
     }

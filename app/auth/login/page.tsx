@@ -27,7 +27,7 @@ import { loginAction, signInWithGoogle } from "@/lib/auth.actions"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import SubmitBtn from "@/components/SubmitBtn"
+import SubmitBtn from "@/components/submit-btn"
 import { Loader2 } from "lucide-react"
 
 const formSchema = z.object({

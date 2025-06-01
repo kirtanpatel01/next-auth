@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Inclusive_Sans } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { ModeToggle } from "@/components/ModeToggle";
+import { ModeToggle } from "@/components/mode-toggle";
 
-const inclusiveSans = Inclusive_Sans({
+const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400"]
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
 });
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inclusiveSans.className} antialiased`}
+        className={`${poppins.className} antialiased`}
       >
         <ThemeProvider
           attribute="class"

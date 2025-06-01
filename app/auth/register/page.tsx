@@ -26,7 +26,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { RegisterSchemaType } from "../../../models/user"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import SubmitBtn from "@/components/SubmitBtn"
+import SubmitBtn from "@/components/submit-btn"
 import { useState } from "react"
 import axios from "axios"
 

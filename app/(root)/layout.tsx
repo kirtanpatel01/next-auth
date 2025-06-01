@@ -1,12 +1,27 @@
 import { auth } from "@/auth";
-import Sidebar from "@/components/Sidebar";
+import AppSidebar from "@/components/app-sidebar";
+import SiteHeader from "@/components/site-header";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import React from "react";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     const session = await auth()
     return (
-        <main className="flex">
-            <Sidebar session={session}/>
-            {children}
-        </main>
+        <SidebarProvider
+            style={
+                {
+                    "--sidebar-width": "calc(var(--spacing)*40)",
+                    "--header-height": "calc(var(--spacing)*12)"
+                } as React.CSSProperties
+            }
+        >
+            <AppSidebar variant='inset' session={session}/>
+            <SidebarInset>
+                <SiteHeader />
+                <main className="flex">
+                    {children}
+                </main>
+            </SidebarInset>
+        </SidebarProvider>
     );
 }
