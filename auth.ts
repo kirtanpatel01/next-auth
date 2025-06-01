@@ -26,6 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     await connectToDB();
                     const user = await User.findOne({ email });
+                    console.log(user);
                     if (!user) {
                         throw new Error('User not found for this email address!')
                     }
@@ -41,6 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     return {
                         id: user._id.toString(),
                         email: user.email,
+                        name: user.fullName,
                     }
                 } catch (error) {
                     throw error

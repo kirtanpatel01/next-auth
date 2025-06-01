@@ -3,6 +3,7 @@ import { Session } from 'next-auth'
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarHeader,
@@ -12,15 +13,16 @@ import {
 } from './ui/sidebar'
 import { ListTodo, Dumbbell, ChartSpline } from 'lucide-react'
 import Link from 'next/link'
+import NavUser from './nav-user'
+import { Button } from './ui/button'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
     session: Session | null
-} 
+}
 
 export default function AppSidebar(
-    { session, ...props }: AppSidebarProps)  
-{
-    console.log(session);
+    { session, ...props }: AppSidebarProps) {
+    console.log("kiton:", session);
     const items = [
         // { to: "/dashboard", title: 'Dashboard' },
         { url: "/habits", title: 'Habits', icon: ListTodo },
@@ -35,7 +37,7 @@ export default function AppSidebar(
                         <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
                             <Link href="/">
                                 <ChartSpline className="!size-5" />
-                                <span className="text-base font-semibold">Dot Habits</span>
+                                <span className="text-base font-semibold">Upcurve</span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -59,6 +61,14 @@ export default function AppSidebar(
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+            <SidebarFooter>
+                {
+                    session
+                    ? <NavUser />
+                    : <Link href={'/auth/login'}><Button className='w-full cursor-pointer'>Login</Button></Link> 
+                }
+
+            </SidebarFooter>
         </Sidebar>
     )
 }

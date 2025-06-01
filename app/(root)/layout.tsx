@@ -10,7 +10,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <SidebarProvider
             style={
                 {
-                    "--sidebar-width": "calc(var(--spacing)*40)",
+                    "--sidebar-width": "calc(var(--spacing)*50)",
                     "--header-height": "calc(var(--spacing)*12)"
                 } as React.CSSProperties
             }
@@ -18,7 +18,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <AppSidebar variant='inset' session={session}/>
             <SidebarInset>
                 <SiteHeader />
-                <main className="flex">
+                <main className="flex p-6">
                     {children}
                 </main>
             </SidebarInset>
