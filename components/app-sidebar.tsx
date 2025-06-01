@@ -19,6 +19,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 export default function AppSidebar(
     { session, ...props }: AppSidebarProps)  
 {
+    console.log(session);
     const items = [
         // { to: "/dashboard", title: 'Dashboard' },
         { url: "/habits", title: 'Habits', icon: ListTodo },

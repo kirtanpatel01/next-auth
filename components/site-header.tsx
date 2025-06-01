@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 
 function SiteHeader() {
     const pathname = usePathname();
-    const path = pathname.split('/')[1]; 4
+    const path = pathname.split('/')[1];
     const name = path.charAt(0).toUpperCase() + path.slice(1);
     console.log(name);
     return (

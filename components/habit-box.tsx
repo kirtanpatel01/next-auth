@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { FaFire } from "react-icons/fa6";
 import { Checkbox } from './ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel } from './ui/form';
@@ -42,7 +42,7 @@ export default function HabitBox() {
     })
 
     const onChange = (slug: string) => {
-        // console.log(slug);
+        console.log(slug);
     }
 
     return (
