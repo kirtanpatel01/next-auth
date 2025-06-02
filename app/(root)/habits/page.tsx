@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { toast } from 'sonner'
 
-function page() {
+function Page() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -17,6 +17,7 @@ function page() {
       router.replace('/habits') // remove query param from URL
     }
   }, [searchParams, router])
+
   return (
     <div className=''>
       <HabitBox />
@@ -24,4 +25,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

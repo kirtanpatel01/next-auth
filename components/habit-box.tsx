@@ -38,11 +38,11 @@ const checks = [
     },
 ]
 
-const habitSchema = z.object({
-    id: z.string(),
-    slug: z.string(),
-    title: z.string().min(1, "Title cannot be empty"),
-})
+// const habitSchema = z.object({
+//     id: z.string(),
+//     slug: z.string(),
+//     title: z.string().min(1, "Title cannot be empty"),
+// })
 
 const FormSchema = z.object({
     items: z.array(z.string())

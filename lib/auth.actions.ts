@@ -2,7 +2,7 @@
 
 "use server"
 
-import { signIn, signOut } from "@/auth"
+import { signIn } from "@/auth"
 import { User } from "../models/user"
 import { connectToDB } from "./mongoose"
 
