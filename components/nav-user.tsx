@@ -21,12 +21,12 @@ export default async function NavUser() {
                             className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
                         >
                             <Avatar className='w-8 h-8 rounded-lg'>
-                                <Image 
-                                    src={session?.user?.image || '/profile.svg'} 
+                                <Image
+                                    src={session?.user?.image || '/profile.svg'}
                                     alt={username || "profile"}
-                                    width={64} 
-                                    height={64} 
-                                    className='rounded-full'/>
+                                    width={64}
+                                    height={64}
+                                    className='rounded-full' />
                                 <AvatarFallback>CN</AvatarFallback>
                             </Avatar>
                             <div className='grid flex-1 text-left text-sm leading-tight'>
@@ -46,19 +46,19 @@ export default async function NavUser() {
                                     Profile
                                 </DropdownMenuItem>
                             </Link>
-                            <DropdownMenuItem>
-                                <form
-                                    action={async () => {
-                                        "use server"
-                                        await signOut()
-                                    }}
-                                >
-                                    <button type="submit" className='flex gap-2 text-red-500'>
+                            <form
+                                action={async () => {
+                                    "use server"
+                                    await signOut()
+                                }}
+                            >
+                                <button type="submit" className='w-full'>
+                                    <DropdownMenuItem variant='destructive' className='cursor-pointer'>
                                         <LogOut className='text-red-500' />
                                         Logout
-                                    </button>
-                                </form>
-                            </DropdownMenuItem>
+                                    </DropdownMenuItem>
+                                </button>
+                            </form>
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
                 </DropdownMenu>

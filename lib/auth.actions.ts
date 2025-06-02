@@ -7,7 +7,8 @@ import { User } from "../models/user"
 import { connectToDB } from "./mongoose"
 
 export async function signInWithGoogle() {
-  await signIn("google", { redirectTo: '/' })
+  await signIn("google", { redirectTo: '/habits?loggedIn=google' });
+
 }
 
 export async function loginAction(formData: FormData) {
@@ -24,11 +25,6 @@ export async function loginAction(formData: FormData) {
 
     return { error: 'Login failed due to an unknown error' };
   }
-}
-
-export async function logoutAction() {
-  
-  await signOut()
 }
 
 export async function fetchUserNameByEmail(email: string) {
