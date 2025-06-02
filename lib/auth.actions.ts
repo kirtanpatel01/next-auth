@@ -8,7 +8,6 @@ import { connectToDB } from "./mongoose"
 
 export async function signInWithGoogle() {
   await signIn("google", { redirectTo: '/habits?loggedIn=google' });
-
 }
 
 export async function loginAction(formData: FormData) {
