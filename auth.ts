@@ -35,12 +35,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     }
 
                     const isValid = await bcrypt.compare(password, user.password);
-                    if(!isValid) {
+                    if (!isValid) {
                         throw new Error('Password not match');
                     }
 
                     return {
-                        id: user._id.toString(),
+                        _id: user._id.toString(),
                         email: user.email,
                         name: user.fullName,
                     }
@@ -53,12 +53,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
     callbacks: {
         async signIn({ user, account }) {
-            if(account?.provider === 'google') {
+            if (account?.provider === 'google') {
                 try {
                     await connectToDB();
                     const existingUser = await User.findOne({ email: user.email });
-
-                    if(!existingUser) {
+                    if (!existingUser) {
                         await User.create({
                             email: user.email,
                             fullName: user.name,
@@ -70,7 +69,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 }
             }
             return true;
-            
+        },
+
+        async jwt({ token, user }) {
+            if (user) {
+                const dbUser = await User.findOne({ email: user.email })
+                token._id = dbUser._id.toString()
+            }
+            return token;
+        },
+
+        async session({ session, token }) {
+            if (session?.user && token?._id) {
+                session.user._id = token._id.toString();
+            }
+            return session;
         }
-    }
+    },
 })

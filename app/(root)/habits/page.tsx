@@ -1,6 +1,6 @@
 'use client'
 
-import HabitBox from '@/components/habit-box'
+import HabitBox from '@/components/habits/habit-box'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -19,7 +19,7 @@ function Page() {
   }, [searchParams, router])
 
   return (
-    <div className=''>
+    <div className='w-full'>
       <HabitBox />
     </div>
   )

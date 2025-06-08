@@ -1,26 +1,18 @@
 // app\api\send\route.ts
 
 import EmailTemplate from '@/components/email-template';
-import { fetchUserNameByEmail } from '@/lib/auth.actions';
 import { Resend } from 'resend';
 import { sign } from 'jsonwebtoken';
+import { auth } from '@/auth';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(req: Request) {
+export async function POST() {
     try {
-        const { email } = await req.json();
-        const res = await fetchUserNameByEmail(email);
-        if(res.status == 404) {
-            return Response.json({ error: res.message }, { status: res.status })
-        }
-        let name='';
+        const session = await auth();
+        const email = session?.user?.email || "";
+        const name = session?.user?.name || "";
         
-        if(res.status === 200) {
-            name = res.data?.name;
-        } else {
-            return Response.json({ error: res.message }, { status: res.status })
-        }
         const token = sign({ email }, process.env.JWT_SECRET!, { expiresIn: "15m" })
         const resetUrl = `https://next-auth-five-ruby.vercel.app/reset?token=${token}`;
 
