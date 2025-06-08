@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDB } from '@/lib/mongoose';
 import { Habit } from '@/models/habits';
 
-export async function PUT(req: NextRequest, { params }: { params: { habitid: string } }) {
-  const { habitid } = params;
+export async function PUT(req: NextRequest) {
+  const habitid = req.nextUrl.pathname.split('/').pop(); // or use regex
   const body = await req.json();
 
   await connectToDB();
@@ -19,8 +19,8 @@ export async function PUT(req: NextRequest, { params }: { params: { habitid: str
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { habitid: string } }) {
-  const { habitid } = params;
+export async function DELETE(req: NextRequest) {
+  const habitid = req.nextUrl.pathname.split('/').pop(); // get dynamic [habitid]
 
   await connectToDB();
   try {
