@@ -34,7 +34,7 @@ export default function HabitBox() {
       }
     }
     fetchHabits()
-  }, [session, habits])
+  }, [session])
 
   return (
     <Card className='max-w-lg'>

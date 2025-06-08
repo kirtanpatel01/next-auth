@@ -76,7 +76,7 @@ function EditHabits({
     <div className='space-y-2'>
       <ol className='space-y-2'>
         {editableHabits.map((habit, index) => (
-          <li key={habit._id} className='flex justify-between'>
+          <li key={habit._id} className='flex flex-col 2xs:flex-row 2xs:justify-between w-full gap-2'>
             <div className='grid grid-cols-[.07fr_1fr] place-items-center gap-2'>
               <span>{index + 1}. </span>
               <Input
@@ -84,7 +84,7 @@ function EditHabits({
                 onChange={(e) => handleChange(index, e.target.value)}
               />
             </div>
-            <div className='space-x-2'>
+            <div className='flex gap-2 self-end 2xs:self-auto'>
               <Button
                 variant={'secondary'}
                 size={'icon'}
