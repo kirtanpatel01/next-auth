@@ -32,7 +32,7 @@ function EditHabits({
   const handleSave = async (habit: Habit) => {
     try {
       await axios.put(`/api/habits/${habit._id}`, { title: habit.title });
-      toast.success("Habit updated!");
+      // toast.success("Habit updated!");
     } catch (err) {
       console.log(err);
       toast.error("Failed to update habit");
@@ -43,7 +43,7 @@ function EditHabits({
     try {
       await axios.delete(`/api/habits/${id}`);
       setHabits(prev => prev.filter(h => h._id !== id));
-      toast.success("Habit deleted!");
+      // toast.success("Habit deleted!");
     } catch (err) {
       console.log(err);
       toast.error("Failed to delete habit");
@@ -65,7 +65,7 @@ function EditHabits({
       const createdHabit = res.data.data.habit;
       setHabits(prev => [...prev, createdHabit]);
       setNewHabitTitle('');
-      toast.success("Habit added!");
+      // toast.success("Habit added!");
     } catch (error) {
       console.log(error);
       toast.error("Error while storing habit");

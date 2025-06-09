@@ -11,33 +11,40 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import ShowHabits from './show-habits';
 import EditHabits from './edit-habits';
+import { Habit } from '@/types/next-auth-d';
 
 export default function HabitBox() {
   const [editMode, setEditMode] = useState(false)
-  const [habits, setHabits] = useState<{ _id: string; title: string }[]>([])
-  const { data: session } = useSession();
+  const [habits, setHabits] = useState<Habit[]>([])
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHabits = async () => {
-      if (!session) return;
+      if (status !== 'loading') {
+        setLoading(false)
+      }
+      if (status === 'unauthenticated') {
+        toast.error("You're not authenticated!")
+        return;
+      }
       const id = session?.user._id;
       try {
-        const res = await axios.get(`/api/habits?id=${id}`)
-        setHabits(res.data.data.habits);
-        console.log(habits);
+        if(id) {
+          const res = await axios.get(`/api/habits?id=${id}`)
+          setHabits(res.data.data.habits);
+        }
       } catch (error) {
-        toast.error("Error while fetching habits")
         console.log("Error while fetching habits from habit-box.jsx: ", error);
       } finally {
         setLoading(false);
       }
     }
     fetchHabits()
-  }, [session])
+  }, [status, session?.user._id])
 
   return (
-    <Card className='max-w-lg'>
+    <Card className='max-w-lg max-h-[calc(100vh-7rem)]'>
       <CardHeader className="flex justify-between items-center text-2xl font-medium">
         <span>Friday 20, 2025</span>
         <div className='flex items-center gap-1 p-2 rounded-2xl'>
@@ -46,7 +53,7 @@ export default function HabitBox() {
         </div>
       </CardHeader>
       <Separator />
-      <CardContent>
+      <CardContent className='overflow-y-auto'>
         {loading ? (
           <div>Loading...</div>
         ) : editMode ? (

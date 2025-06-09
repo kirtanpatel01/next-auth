@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Habit } from '@/types/next-auth-d'
+import axios from 'axios'
 
 const FormSchema = z.object({
   items: z.array(z.string())
@@ -12,7 +13,7 @@ const FormSchema = z.object({
 function ShowHabits({ habits } : { habits: Habit[] }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: { items: [] },
+    defaultValues: { items: habits.filter(h => h.isCompleted).map(h => h._id) },
   })
 
   return (
@@ -37,7 +38,13 @@ function ShowHabits({ habits } : { habits: Habit[] }) {
                         <Checkbox
                           className='size-6'
                           checked={field.value?.includes(habit._id)}
-                          onCheckedChange={(checked) => {
+                          // defaultChecked={habit.isCompleted}
+                          onCheckedChange={async (checked) => {
+                            if(checked) {
+                              await axios.post('/api/habits/complete', { id: habit._id })
+                            } else {
+                              await axios.post('/api/habits/incomplete', { id: habit._id })
+                            }
                             return checked
                               ? field.onChange([...field.value, habit._id])
                               : field.onChange(

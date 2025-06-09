@@ -23,6 +23,7 @@ declare module "next-auth/jwt" {
 export interface Habit {
   _id: string;
   title: string;
+  isCompleted: boolean;
 };
 
 export interface FormSchema {
