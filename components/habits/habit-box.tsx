@@ -21,26 +21,22 @@ export default function HabitBox() {
 
   useEffect(() => {
     const fetchHabits = async () => {
-      if (status !== 'loading') {
-        setLoading(false)
-      }
-      if (status === 'unauthenticated') {
-        toast.error("You're not authenticated!")
-        return;
-      }
       const id = session?.user._id;
       try {
-        if(id) {
-          const res = await axios.get(`/api/habits?id=${id}`)
-          setHabits(res.data.data.habits);
-        }
+        const res = await axios.get(`/api/habits?id=${id}`)
+        setHabits(res.data.data.habits);
       } catch (error) {
         console.log("Error while fetching habits from habit-box.jsx: ", error);
       } finally {
         setLoading(false);
       }
     }
-    fetchHabits()
+    if (status === 'unauthenticated') {
+      toast.error("You're not authenticated!");
+      setLoading(false);
+    } else if (status === 'authenticated' && session?.user._id) {
+      fetchHabits();
+    }
   }, [status, session?.user._id])
 
   return (
@@ -56,10 +52,12 @@ export default function HabitBox() {
       <CardContent className='overflow-y-auto'>
         {loading ? (
           <div>Loading...</div>
-        ) : editMode ? (
-          <EditHabits habits={habits} setHabits={setHabits} />
         ) : habits.length > 0 ? (
-          <ShowHabits habits={habits} />
+          editMode ? (
+            <EditHabits habits={habits} setHabits={setHabits} />
+          ) : (
+            <ShowHabits habits={habits} />
+          )
         ) : (
           <div>
             <span className='font-medium text-lg'>No Habits!</span>
