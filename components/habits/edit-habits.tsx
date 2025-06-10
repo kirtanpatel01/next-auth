@@ -16,7 +16,7 @@ function EditHabits({
 }) {
   const [editableHabits, setEditableHabits] = useState<Habit[]>(habits);
   const [newHabitTitle, setNewHabitTitle] = useState('');
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const userId = session?.user._id;
 
   useEffect(() => {
@@ -115,7 +115,7 @@ function EditHabits({
             className='w-fit'
           />
         </div>
-        <Button size={'icon'} className='cursor-pointer' onClick={handleAdd}>
+        <Button size={'icon'} className='cursor-pointer' onClick={handleAdd} disabled={status==='unauthenticated'}>
           <Plus />
         </Button>
       </div>

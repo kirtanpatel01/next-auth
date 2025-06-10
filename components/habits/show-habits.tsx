@@ -36,14 +36,14 @@ function ShowHabits({ habits } : { habits: Habit[] }) {
                     >
                       <FormControl>
                         <Checkbox
-                          className='size-6'
+                          className='size-6 cursor-pointer'
                           checked={field.value?.includes(habit._id)}
                           // defaultChecked={habit.isCompleted}
                           onCheckedChange={async (checked) => {
                             if(checked) {
-                              await axios.post('/api/habits/complete', { id: habit._id })
+                              await axios.post('/api/habits/complete', { _id: habit._id })
                             } else {
-                              await axios.post('/api/habits/incomplete', { id: habit._id })
+                              await axios.post('/api/habits/incomplete', { _id: habit._id })
                             }
                             return checked
                               ? field.onChange([...field.value, habit._id])
@@ -55,7 +55,7 @@ function ShowHabits({ habits } : { habits: Habit[] }) {
                           }}
                         />
                       </FormControl>
-                      <FormLabel>
+                      <FormLabel className='cursor-pointer'>
                         {habit.title}
                       </FormLabel>
                     </FormItem>

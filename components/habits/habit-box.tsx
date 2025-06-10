@@ -12,6 +12,7 @@ import axios from 'axios';
 import ShowHabits from './show-habits';
 import EditHabits from './edit-habits';
 import { Habit } from '@/types/next-auth-d';
+import { redirect } from 'next/navigation';
 
 export default function HabitBox() {
   const [editMode, setEditMode] = useState(false)
@@ -39,6 +40,13 @@ export default function HabitBox() {
     }
   }, [status, session?.user._id])
 
+  const toggleEdiMode = () => {
+    if(editMode && status=='unauthenticated') {
+      redirect('/auth/login')
+    }
+    setEditMode(!editMode)
+  }
+
   return (
     <Card className='max-w-lg max-h-[calc(100vh-7rem)]'>
       <CardHeader className="flex justify-between items-center text-2xl font-medium">
@@ -59,15 +67,19 @@ export default function HabitBox() {
             <ShowHabits habits={habits} />
           )
         ) : (
-          <div>
-            <span className='font-medium text-lg'>No Habits!</span>
-            <p className='opacity-50'>Click on edit button to add new habits</p>
-          </div>
+          editMode ? (
+            <EditHabits habits={habits} setHabits={setHabits} />
+          ) : (
+            <div>
+              <span className='font-medium text-lg'>No Habits!</span>
+              <p className='opacity-50'>Click on edit button to add new habits</p>
+            </div>
+          )
         )}
       </CardContent>
       <Separator />
       <CardFooter>
-        <Button type='button' onClick={() => setEditMode(!editMode)} className='flex ml-auto cursor-pointer'>
+        <Button type='button' onClick={toggleEdiMode} className='flex ml-auto cursor-pointer'>
           <span>{editMode ? "Save" : "Edit"}</span>
           {editMode ? <Save /> : <Edit />}
         </Button>

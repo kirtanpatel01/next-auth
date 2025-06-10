@@ -3,16 +3,15 @@ import { Habit } from "@/models/habits";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { id } = await req.json();
+  const { _id } = await req.json();
 
-  if (!id) {
+  if (!_id) {
     return NextResponse.json({ error: "User ID required" }, { status: 400 })
   }
   await connectToDB();
 
   try {
-    await Habit.findOneAndUpdate({ id }, { $set: { isCompleted: true } })
-
+    await Habit.findOneAndUpdate({ _id }, { $set: { isCompleted: true } })
     return NextResponse.json({ message: 'Habit marked as completed' }, { status: 200 })
   } catch (error) {
     console.log(error);
